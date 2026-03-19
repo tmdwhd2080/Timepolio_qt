@@ -4,8 +4,8 @@ import numpy as np
 # ============================================================
 # ★ 하드코딩 파라미터 (여기서만 변경하세요)
 # ============================================================
-FILE_PATH      = r"C:\Users\intern9\Timepolio_qt\DATA\탐폴_데이터.xlsx"
-BENCHMARK_PATH = r"C:\Users\intern9\Timepolio_qt\DATA\코스피_코스닥_종가.xlsx"
+FILE_PATH      = r"C:\Users\tmdwhd2080\Desktop\Desktop\새 폴더\대학\동아리\Timepolio_qt\DATA\탐폴_데이터.xlsx"
+BENCHMARK_PATH = r"C:\Users\tmdwhd2080\Desktop\Desktop\새 폴더\대학\동아리\Timepolio_qt\DATA\코스피_코스닥_종가.xlsx"
 N_DAYS = 2   # 순매수 시그널 합산 기간 (n일)
 K_DAYS = 1   # 이후 성과 측정 기간 (k일)
 # ============================================================
