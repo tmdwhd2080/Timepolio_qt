@@ -10,17 +10,12 @@ import ast
 import pandas as pd
 import google.generativeai as genai
 
-# ══════════════════════════════════════════════════════════
-#  ★ 설정
-# ══════════════════════════════════════════════════════════
+
 GEMINI_API_KEY = "AIzaSyDWklWQY5xkY8hCz8D1iri-pJshnFzhAy4"   # https://aistudio.google.com/app/apikey
-FIELDS_FILE    = r"C:\Users\intern9\Timepolio_qt\노승종_개인\worldquant_fields.xlsx"        # 크롤링된 파일 경로
-# ══════════════════════════════════════════════════════════
+FIELDS_FILE    = r"C:\Users\intern9\Timepolio_qt\노승종_개인\worldquant_fields.xlsx"        
 
 
-# ──────────────────────────────────────────────────────────
-# 1. 데이터 로드 및 전처리
-# ──────────────────────────────────────────────────────────
+
 def load_fields(path: str) -> pd.DataFrame:
     df = pd.read_excel(path)
 
@@ -43,10 +38,6 @@ def load_fields(path: str) -> pd.DataFrame:
     return df
 
 
-# ──────────────────────────────────────────────────────────
-# 2. 필드 목록을 Gemini 컨텍스트용 텍스트로 직렬화
-#    - 전체를 한 번에 넣으면 토큰 초과 가능 → 핵심 컬럼만 사용
-# ──────────────────────────────────────────────────────────
 def build_field_context(df: pd.DataFrame) -> str:
     lines = []
     for _, row in df.iterrows():
@@ -62,9 +53,7 @@ def build_field_context(df: pd.DataFrame) -> str:
     return "\n".join(lines)
 
 
-# ──────────────────────────────────────────────────────────
-# 3. Gemini 모델 초기화
-# ──────────────────────────────────────────────────────────
+
 def init_gemini(api_key: str):
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel(
@@ -104,9 +93,7 @@ def init_gemini(api_key: str):
     return model
 
 
-# ──────────────────────────────────────────────────────────
-# 4. 전략 → 필드 추천
-# ──────────────────────────────────────────────────────────
+
 def recommend_fields(model, field_context: str, strategy: str) -> dict:
     prompt = f"""
 아래는 WorldQuant Brain에서 사용 가능한 전체 데이터 필드 목록입니다.
@@ -133,9 +120,7 @@ primary는 최대 8개, proxy는 최대 5개로 제한합니다.
     return json.loads(raw)
 
 
-# ──────────────────────────────────────────────────────────
-# 5. 결과 출력 포맷
-# ──────────────────────────────────────────────────────────
+
 def print_result(result: dict):
     print("\n" + "═" * 70)
     print(f"  전략 요약: {result.get('strategy_summary', '')}")
@@ -164,9 +149,7 @@ def print_result(result: dict):
     print("\n" + "═" * 70)
 
 
-# ──────────────────────────────────────────────────────────
-# 6. 결과를 Excel로 저장
-# ──────────────────────────────────────────────────────────
+
 def save_result(result: dict, strategy: str, out_path: str = "추천결과.xlsx"):
     rows = []
     for f in result.get("primary_fields", []):
@@ -200,9 +183,6 @@ def save_result(result: dict, strategy: str, out_path: str = "추천결과.xlsx"
     print(f"\n💾 결과 저장 완료: {out_path}")
 
 
-# ──────────────────────────────────────────────────────────
-# 7. 대화형 루프 (메인)
-# ──────────────────────────────────────────────────────────
 def main():
     print("=" * 70)
     print("  WorldQuant Brain 데이터 필드 추천 봇  (Gemini 1.5 Flash)")
